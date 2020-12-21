@@ -2,9 +2,8 @@ package cn.edu.ecnu.dao;
 
 import cn.edu.ecnu.domain.Student;
 import cn.edu.ecnu.domain.StudentExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface StudentMapper {
     /**

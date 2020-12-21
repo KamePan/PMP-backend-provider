@@ -32,5 +32,9 @@
                    ref="userServiceImpl" retries="0" timeout="6000" loadbalance="random"/>
     <dubbo:service interface="cn.edu.ecnu.service.ITeamService"
                    ref="teamServiceImpl" retries="0" timeout="6000" loadbalance="random"/>
+    <!--<dubbo:service interface="org.springframework.security.core.userdetails.UserDetailsService"
+                   ref="userDetailsServiceImpl" retries="0" timeout="60000" loadbalance="random">
+        <dubbo:method name="loadUserByUsername"></dubbo:method>
+    </dubbo:service>-->
 
 </beans>

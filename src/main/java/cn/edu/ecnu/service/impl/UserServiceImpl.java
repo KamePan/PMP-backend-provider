@@ -40,6 +40,7 @@ public class UserServiceImpl implements IUserService {
     public User registerUser(User user) {
         Student student = new Student();
         student.setSid(user.getUid());
+        student.setUsername(user.getUsername());
         studentMapper.insertSelective(student);
         userMapper.insertSelective(user);
         return user;
@@ -48,6 +49,7 @@ public class UserServiceImpl implements IUserService {
     public void insertUserForTeacher(User user) {
         Teacher teacher = new Teacher();
         teacher.setTid(user.getUid());
+        teacher.setUsername(user.getUsername());
         teacherMapper.insertSelective(teacher);
         userMapper.insertSelective(user);
     }
@@ -55,5 +57,16 @@ public class UserServiceImpl implements IUserService {
     public void insertJudgeTeacherProject(JudgeTeacherProject judge) {
         insertJudgeTeacherProject(judge);
     }
+
+    /*public User findUserByUsername(String username) {
+        UserExample example =  new UserExample();
+        UserExample.Criteria criteria = example.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        List<User> users = userMapper.selectByExample(example);
+        if (!users.isEmpty()) {
+            return users.get(0);
+        }
+        return null;
+    }*/
 
 }

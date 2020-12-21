@@ -15,7 +15,7 @@ public class StudentServiceImpl implements IStudentService {
     @Autowired
     private StudentMapper studentMapper;
 
-    @Cacheable
+    @Cacheable(unless="#result == null")
     public Student findStudentById(String id) {
         Student student = studentMapper.selectByPrimaryKey(id);
         return student;

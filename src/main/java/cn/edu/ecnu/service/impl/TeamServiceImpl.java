@@ -23,7 +23,7 @@ public class TeamServiceImpl implements ITeamService {
     /*@Autowired
     private RedisTemplate<String, Object> redisTemplate;*/
 
-    @Cacheable
+    @Cacheable(unless="#result == null")
     public Team findTeamById(String tid) {
         Team team = null;
 
@@ -33,8 +33,8 @@ public class TeamServiceImpl implements ITeamService {
         team = teamMapper.selectByPrimaryKey(tid);
         redisTemplate.opsForValue().set(tid, team, 1, TimeUnit.MINUTES); //设置 1 分钟过期时间
         }*/
-
         team = teamMapper.selectByPrimaryKey(tid);
+
         return team;
     }
 
