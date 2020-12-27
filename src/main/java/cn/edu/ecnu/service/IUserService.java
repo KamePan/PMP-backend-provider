@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface IUserService {
 
-    public void insertJudgeTeacherProject(JudgeTeacherProject judge);
+    void insertJudgeTeacherProject(JudgeTeacherProject judge);
 
-    public void insertUserForTeacher(User user);
+    void insertUserForTeacher(User user);
 
-    public User registerUser(User user);
+    User registerUser(User user);
 
-    public List<User> getAllUsers();
+    List<User> getAllUsers();
 
-    //User findUserByUsername();
+    User findUserByUsername(String username);
 }

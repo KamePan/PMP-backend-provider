@@ -17,8 +17,9 @@ public class AttachServiceImpl implements IAttachService {
     private AttachmentMapper attachmentMapper;
 
     /*获取图片后缀并生成 aid，将 attachment 对象添加到数据库中*/
-    public String insertAttachment(String pid, MultipartFile file, String path) {
-        String originalFilename = file.getOriginalFilename();
+    public void insertAttachment(Attachment attachment) {
+
+        /*String originalFilename = file.getOriginalFilename();
         String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
         String aid = "A" + UUID.randomUUID().toString().substring(0, 8);
         String filepath = path + aid + suffix;
@@ -29,8 +30,7 @@ public class AttachServiceImpl implements IAttachService {
             e.printStackTrace();
             return "上传失败";
         }
-        Attachment attachment = new Attachment(aid, filepath, pid);
+        Attachment attachment = new Attachment(aid, filepath, pid);*/
         attachmentMapper.insert(attachment);
-        return path;
     }
 }

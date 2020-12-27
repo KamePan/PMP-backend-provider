@@ -1,7 +1,10 @@
 package cn.edu.ecnu.service.impl;
 
 import cn.edu.ecnu.dao.ProjectMapper;
-import cn.edu.ecnu.domain.Project;
+import cn.edu.ecnu.dao.StudentMapper;
+import cn.edu.ecnu.dao.TeacherMapper;
+import cn.edu.ecnu.dao.TeamMapper;
+import cn.edu.ecnu.domain.*;
 import cn.edu.ecnu.service.IProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -9,30 +12,62 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @CacheConfig(cacheNames = "Project", keyGenerator = "keyGenerator")
 @Service
 public class ProjectServiceImpl implements IProjectService {
 
     @Autowired
-    private ProjectMapper projectMapper;
+    private StudentMapper studentMapper;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private TeacherMapper teacherMapper;
 
-    @Cacheable
+    @Autowired
+    private TeamMapper teamMapper;
+
+    @Autowired
+    private ProjectMapper projectMapper;
+
+    //@Cacheable
     public Project findProjectById(String pid) {
-        Project project = null;
-        if (redisTemplate.hasKey(pid)) {
-            project = (Project) redisTemplate.opsForValue().get(pid);
-            System.out.println("redis: " + project.toString());
-        } else {
-            project = projectMapper.selectByPrimaryKey(pid);
-            redisTemplate.opsForValue().set(pid, project);
-        }
+        Project project = projectMapper.selectByPrimaryKey(pid);
+        //project.setTeam(teamMapper.selectByPrimaryKey(project.getTeamid()));
         return project;
     }
 
-    public void insertProject(Project project) {
+    /*效率很低的做法*/
+    @Override
+    public List<Project> findProjectsBySid(String sid) {
+        Student student = studentMapper.selectByPrimaryKey(sid);
+        List<Team> teams = student.getTeams();
+        List<Project> projects = new ArrayList<>();
+        for (Team team : teams) {
+            if (team.getTeamid() != null) {
+                Team team1 = teamMapper.selectByPrimaryKey(team.getTeamid());
+                List<Project> projectsForOneTeam = team1.getProjects();
+                for (Project project : projectsForOneTeam) {
+                    if (project.getPid() != null) {
+                        projects.add(projectMapper.selectByPrimaryKey(project.getPid()));
+                    }
+                }
+            }
+        }
+        return projects;
+    }
+
+    public Project insertProject(Project project) {
+        TeacherExample example = new TeacherExample();
+        TeacherExample.Criteria criteria = example.createCriteria();
+        criteria.andUsernameEqualTo(project.getAdvisor().getUsername());
+        List<Teacher> teachers = teacherMapper.selectByExample(example);
+        if (teachers.size() == 0) {
+            return null;
+        }
+        project.setAdvisorid(teachers.get(0).getTid());
         projectMapper.insertSelective(project);
+        return project;
     }
 }

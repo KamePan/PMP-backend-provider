@@ -37,6 +37,7 @@ public class UserServiceImpl implements IUserService {
         return users;
     }
 
+
     public User registerUser(User user) {
         Student student = new Student();
         student.setSid(user.getUid());
@@ -55,10 +56,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     public void insertJudgeTeacherProject(JudgeTeacherProject judge) {
-        insertJudgeTeacherProject(judge);
+        judgeTeacherProjectMapper.insert(judge);
     }
 
-    /*public User findUserByUsername(String username) {
+    public User findUserByUsername(String username) {
         UserExample example =  new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(username);
@@ -67,6 +68,6 @@ public class UserServiceImpl implements IUserService {
             return users.get(0);
         }
         return null;
-    }*/
+    }
 
 }
