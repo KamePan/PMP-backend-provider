@@ -35,4 +35,9 @@ public class StudentServiceImpl implements IStudentService {
         }
         return students.get(0);
     }
+
+    @Override
+    public void updateStudent(Student student) {
+        studentMapper.updateByPrimaryKeySelective(student);
+    }
 }

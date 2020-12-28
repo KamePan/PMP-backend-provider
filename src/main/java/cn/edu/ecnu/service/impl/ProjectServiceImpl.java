@@ -50,7 +50,11 @@ public class ProjectServiceImpl implements IProjectService {
                 List<Project> projectsForOneTeam = team1.getProjects();
                 for (Project project : projectsForOneTeam) {
                     if (project.getPid() != null) {
-                        projects.add(projectMapper.selectByPrimaryKey(project.getPid()));
+                        Project project1 = projectMapper.selectByPrimaryKey(project.getPid());
+                        if (project1.getAttachments().size() == 1 && project1.getAttachments().get(0).getAid() == null) {
+                            project1.setAttachments(null);
+                        }
+                        projects.add(project1);
                     }
                 }
             }
