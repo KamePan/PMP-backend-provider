@@ -58,6 +58,11 @@ public class ProjectServiceImpl implements IProjectService {
         return projects;
     }
 
+    @Override
+    public void updateProject(Project project) {
+        projectMapper.updateByPrimaryKeySelective(project);
+    }
+
     public Project insertProject(Project project) {
         TeacherExample example = new TeacherExample();
         TeacherExample.Criteria criteria = example.createCriteria();

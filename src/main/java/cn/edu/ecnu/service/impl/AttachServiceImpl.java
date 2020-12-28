@@ -33,4 +33,15 @@ public class AttachServiceImpl implements IAttachService {
         Attachment attachment = new Attachment(aid, filepath, pid);*/
         attachmentMapper.insert(attachment);
     }
+
+    @Override
+    public void deleteAttachmentByAid(String aid) {
+        attachmentMapper.deleteByPrimaryKey(aid);
+    }
+
+    @Override
+    public Attachment findAttachmentByAid(String aid) {
+        Attachment attachment = attachmentMapper.selectByPrimaryKey(aid);
+        return attachment;
+    }
 }
