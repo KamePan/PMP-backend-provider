@@ -66,6 +66,7 @@ public class ProjectServiceImpl implements IProjectService {
         if (teachers.size() == 0) {
             return null;
         }
+        project.setTeam(teamMapper.selectByPrimaryKey(project.getTeamid()));
         project.setAdvisorid(teachers.get(0).getTid());
         projectMapper.insertSelective(project);
         return project;
