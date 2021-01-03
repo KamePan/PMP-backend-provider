@@ -34,8 +34,35 @@ public class ProjectServiceImpl implements IProjectService {
     //@Cacheable
     public Project findProjectById(String pid) {
         Project project = projectMapper.selectByPrimaryKey(pid);
-        //project.setTeam(teamMapper.selectByPrimaryKey(project.getTeamid()));
         return project;
+    }
+
+    public List<Project> fuzzyQueryForProjects(Project project) {
+        /*ProjectExample example = new ProjectExample();
+        ProjectExample.Criteria criteria = example.createCriteria();
+        if (project.getPid() != null) {
+            criteria.andPidEqualTo(project.getPid());
+        }
+        if (project.getProjectname() != null) {
+            criteria.andProjectnameLike(project.getProjectname());
+        }
+        if (project.getType() != null) {
+            criteria.andTypeEqualTo(project.getType());
+        }
+        if (project.getStage() != null) {
+            criteria.andStageEqualTo(project.getStage());
+        }
+        System.out.println(example.toString());*/
+        List<Project> projects = projectMapper.fuzzyQueryForProjects(project);
+        System.out.println(projects);
+        return projects;
+    }
+
+    @Override
+    public List<Project> findAllProjects() {
+        ProjectExample example = new ProjectExample();
+        List<Project> projects = projectMapper.selectByExample(example);
+        return projects;
     }
 
     /*效率很低的做法*/
@@ -46,14 +73,15 @@ public class ProjectServiceImpl implements IProjectService {
         List<Project> projects = new ArrayList<>();
         for (Team team : teams) {
             if (team.getTeamid() != null) {
-                Team team1 = teamMapper.selectByPrimaryKey(team.getTeamid());
-                List<Project> projectsForOneTeam = team1.getProjects();
+                team = teamMapper.selectByPrimaryKey(team.getTeamid());
+                List<Project> projectsForOneTeam = team.getProjects();
                 for (Project project : projectsForOneTeam) {
                     if (project.getPid() != null) {
                         Project project1 = projectMapper.selectByPrimaryKey(project.getPid());
-                        if (project1.getAttachments().size() == 1 && project1.getAttachments().get(0).getAid() == null) {
+                        project1.setTeam(teamMapper.selectByPrimaryKey(project1.getTeamid()));
+                        /*if (project1.getAttachments().size() == 1 && project1.getAttachments().get(0).getAid() == null) {
                             project1.setAttachments(null);
-                        }
+                        }*/
                         projects.add(project1);
                     }
                 }
@@ -79,5 +107,15 @@ public class ProjectServiceImpl implements IProjectService {
         project.setAdvisorid(teachers.get(0).getTid());
         projectMapper.insertSelective(project);
         return project;
+    }
+
+    public List<Project> findProjectsWithStageEqualsTwo() {
+        List<Project> projects = projectMapper.selectWithStageEqualsTwo();
+        return projects;
+    }
+
+    public List<Project> findProjectsNeedsType() {
+        List<Project> projects = projectMapper.selectWithNeedsType();
+        return projects;
     }
 }

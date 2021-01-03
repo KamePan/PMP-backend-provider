@@ -40,6 +40,8 @@ public class Project implements Serializable {
 
     private List<Attachment> attachments;
 
+    private List<Judge> judges;
+
     private static final long serialVersionUID = 1L;
 
 

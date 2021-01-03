@@ -87,5 +87,13 @@ public class TeamServiceImpl implements ITeamService {
         return team;
     }
 
+    @Override
+    public void deleteTeamByTeamid(String teamid) {
+        TeamStudentExample example = new TeamStudentExample();
+        example.createCriteria().andTeamidEqualTo(teamid);
+        teamStudentMapper.deleteByExample(example);
+        teamMapper.deleteByPrimaryKey(teamid);
+    }
+
 
 }

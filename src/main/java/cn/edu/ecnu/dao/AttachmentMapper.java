@@ -2,9 +2,8 @@ package cn.edu.ecnu.dao;
 
 import cn.edu.ecnu.domain.Attachment;
 import cn.edu.ecnu.domain.AttachmentExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AttachmentMapper {
     /**

@@ -1,6 +1,7 @@
 package cn.edu.ecnu.service.impl;
 
 import cn.edu.ecnu.dao.StudentMapper;
+import cn.edu.ecnu.domain.Message;
 import cn.edu.ecnu.domain.Student;
 import cn.edu.ecnu.domain.StudentExample;
 import cn.edu.ecnu.service.IStudentService;
@@ -21,6 +22,13 @@ public class StudentServiceImpl implements IStudentService {
     //@Cacheable(unless="#result == null")
     public Student findStudentById(String id) {
         Student student = studentMapper.selectByPrimaryKey(id);
+        List<Message> messages = student.getMessages();
+        for (int a = messages.size() - 1; a >= 0; a--) {
+            if (messages.get(a).getMid() == null) {
+                messages.remove(messages.get(a));
+            }
+        }
+        student.setMessages(messages);
         return student;
     }
 

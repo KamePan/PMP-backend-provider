@@ -1,6 +1,5 @@
 package cn.edu.ecnu.service.impl;
 
-import cn.edu.ecnu.dao.JudgeTeacherProjectMapper;
 import cn.edu.ecnu.dao.StudentMapper;
 import cn.edu.ecnu.dao.TeacherMapper;
 import cn.edu.ecnu.dao.UserMapper;
@@ -26,9 +25,6 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private StudentMapper studentMapper;
 
-    @Autowired
-    JudgeTeacherProjectMapper judgeTeacherProjectMapper;
-
     @Cacheable
     public List<User> getAllUsers() {
         List<User> users = null;
@@ -39,6 +35,9 @@ public class UserServiceImpl implements IUserService {
 
 
     public User registerUser(User user) {
+        if (findUserByUsername(user.getUsername()) != null) {
+            throw new RuntimeException("用户名已被注册");
+        }
         Student student = new Student();
         student.setSid(user.getUid());
         student.setUsername(user.getUsername());
@@ -48,6 +47,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     public void insertUserForTeacher(User user) {
+        if (findUserByUsername(user.getUsername()) != null) {
+            throw new RuntimeException("用户名已被注册");
+        }
         Teacher teacher = new Teacher();
         teacher.setTid(user.getUid());
         teacher.setUsername(user.getUsername());
@@ -55,9 +57,6 @@ public class UserServiceImpl implements IUserService {
         userMapper.insertSelective(user);
     }
 
-    public void insertJudgeTeacherProject(JudgeTeacherProject judge) {
-        judgeTeacherProjectMapper.insert(judge);
-    }
 
     public User findUserByUsername(String username) {
         UserExample example =  new UserExample();
@@ -69,5 +68,10 @@ public class UserServiceImpl implements IUserService {
         }
         return null;
     }
+
+    public void modifyPassword(User user) {
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
 
 }

@@ -19,4 +19,6 @@ public interface ITeamService {
 
     Team updateTeamName(String teamid, String teamname);
 
+    void deleteTeamByTeamid(String teamid);
+
 }

@@ -9,7 +9,7 @@
     <id column="aid" property="aid" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="pid" property="pid" jdbcType="VARCHAR" />
-    <result column="advicetime" property="advicetime" jdbcType="DATE" />
+    <result column="advicetime" property="advicetime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <!--
@@ -138,7 +138,7 @@
     insert into advice (aid, content, pid, 
       advicetime)
     values (#{aid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, 
-      #{advicetime,jdbcType=DATE})
+      #{advicetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.ecnu.domain.Advice" >
     <!--
@@ -171,7 +171,7 @@
         #{pid,jdbcType=VARCHAR},
       </if>
       <if test="advicetime != null" >
-        #{advicetime,jdbcType=DATE},
+        #{advicetime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -202,7 +202,7 @@
         pid = #{record.pid,jdbcType=VARCHAR},
       </if>
       <if test="record.advicetime != null" >
-        advicetime = #{record.advicetime,jdbcType=DATE},
+        advicetime = #{record.advicetime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -218,7 +218,7 @@
     set aid = #{record.aid,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
       pid = #{record.pid,jdbcType=VARCHAR},
-      advicetime = #{record.advicetime,jdbcType=DATE}
+      advicetime = #{record.advicetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -237,7 +237,7 @@
         pid = #{pid,jdbcType=VARCHAR},
       </if>
       <if test="advicetime != null" >
-        advicetime = #{advicetime,jdbcType=DATE},
+        advicetime = #{advicetime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where aid = #{aid,jdbcType=VARCHAR}
@@ -250,7 +250,7 @@
     update advice
     set content = #{content,jdbcType=VARCHAR},
       pid = #{pid,jdbcType=VARCHAR},
-      advicetime = #{advicetime,jdbcType=DATE}
+      advicetime = #{advicetime,jdbcType=TIMESTAMP}
     where aid = #{aid,jdbcType=VARCHAR}
   </update>
 </mapper>
